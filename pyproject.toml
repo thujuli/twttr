@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "project"
+version = "0.1.0"
+description = ""
+authors = ["thujuli <thujuli037@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+flask = "^2.3.3"
+flask-sqlalchemy = "^3.1.1"
+psycopg2 = "^2.9.7"
+flask-marshmallow = "^0.15.0"
+marshmallow-sqlalchemy = "^0.29.0"
+
+
+[tool.poetry.group.dev.dependencies]
+python-dotenv = "^1.0.0"
+pytest = "^7.4.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
