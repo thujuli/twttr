@@ -2,6 +2,7 @@ from flask import Blueprint, request
 from werkzeug.security import generate_password_hash
 from marshmallow import ValidationError
 from sqlalchemy.exc import NoResultFound
+from flask_jwt_extended import jwt_required, get_jwt_identity
 from app.utils import response
 from app.validators.user import user_validator
 from app.services.user import UserCRUD
@@ -35,3 +36,12 @@ def create_user():
     # if email exist in database, raise err
     if user_by_email:
         return response.error("Email address is already exist"), 409
+
+
+@bp.route("/me", methods=["GET"])
+@jwt_required()
+def get_current_user():
+    current_user_id = get_jwt_identity()
+    data = UserCRUD.get_by_id(current_user_id)
+
+    return response.ok("Successfully retrive user", data)

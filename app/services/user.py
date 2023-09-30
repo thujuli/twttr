@@ -14,3 +14,8 @@ class UserCRUD:
         db.session.add(user)
         db.session.commit()
         return user_schema.dump(user)
+
+    @staticmethod
+    def get_by_id(id: int):
+        user = db.session.execute(db.select(Users).filter_by(id=id)).scalar_one()
+        return user_schema.dump(user)

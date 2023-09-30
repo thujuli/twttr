@@ -1,21 +1,21 @@
 import pytest
 
 
-# @pytest.mark.parametrize(
-#     "username, email, password, role",
-#     [
-#         ("jhon", "jhon@gmail.com", "jhon", "admin"),
-#         ("ucup", "ucup@gmail.com", "ucup", "user"),
-#         ("asep", "asep@gmail.com", "asep", "user"),
-#     ],
-# )
-# def test_create_user(client, username, email, password, role):
-#     response = client.post(
-#         "/api/users/",
-#         json={"username": username, "email": email, "password": password, "role": role},
-#     )
+@pytest.mark.parametrize(
+    "username, email, password, role",
+    [
+        ("jhon", "jhon@gmail.com", "jhon", "admin"),
+        ("ucup", "ucup@gmail.com", "ucup", "user"),
+        ("asep", "asep@gmail.com", "asep", "user"),
+    ],
+)
+def test_create_user(client, username, email, password, role):
+    response = client.post(
+        "/api/users/",
+        json={"username": username, "email": email, "password": password, "role": role},
+    )
 
-#     assert response.status_code == 201
+    assert response.status_code == 201
 
 
 @pytest.mark.parametrize(
