@@ -27,3 +27,40 @@ def app():
 @pytest.fixture()
 def client(app):
     return app.test_client()
+
+
+@pytest.fixture()
+def access_token_jhon(client):
+    username = "jhon"
+    email = "jhon@gmail.com"
+    password = "jhon"
+    role = "user"
+
+    # create new user
+    client.post(
+        "/api/users/",
+        json={"username": username, "email": email, "password": password, "role": role},
+    )
+
+    # login
+    login_response = client.post(
+        "/api/auth/login", json={"email": email, "password": password}
+    )
+
+    login_json = login_response.json
+    return login_json["data"]["access_token"]
+
+
+@pytest.fixture()
+def tweets_jhon(client, access_token_jhon):
+    headers = {"Authorization": f"Bearer {access_token_jhon}"}
+
+    tweets = [
+        {"content": "Hello World"},
+        {"content": "Flask"},
+        {"content": "Web Framework"},
+    ]
+
+    # add new tweet
+    for tweet in tweets:
+        client.post("/api/tweets/", headers=headers, json={"content": tweet["content"]})

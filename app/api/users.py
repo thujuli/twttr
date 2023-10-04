@@ -44,4 +44,4 @@ def get_current_user():
     current_user_id = get_jwt_identity()
     data = UserCRUD.get_by_id(current_user_id)
 
-    return response.ok("Successfully retrive user", data)
+    return response.ok("User has been successfully retrived", data)
