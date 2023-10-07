@@ -11,3 +11,8 @@ def register():
 @bp.route("/login")
 def login():
     return render_template("login.html")
+
+
+@bp.route("/")
+def home():
+    return render_template("index.html")
