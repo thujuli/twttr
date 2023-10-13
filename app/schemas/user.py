@@ -1,10 +1,10 @@
 from app.core.extensions import ma
-from app.models import Users
+from app.models import User
 
 
 class UserSchema(ma.SQLAlchemySchema):
     class Meta:
-        model = Users
+        model = User
 
     id = ma.auto_field()
     username = ma.auto_field()

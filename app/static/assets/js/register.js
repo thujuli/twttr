@@ -33,7 +33,7 @@ formRegister.addEventListener("submit", function (e) {
   xhr.onreadystatechange = function () {
     if (this.readyState == 4) {
       if (this.status == 201) {
-        formLogin.reset();
+        formRegister.reset();
         let res = JSON.parse(this.response);
         div.innerHTML = res.message;
         div.setAttribute("class", "alert alert-success");

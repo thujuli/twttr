@@ -1,13 +1,12 @@
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy.orm import DeclarativeBase
 from flask_marshmallow import Marshmallow
 from flask_jwt_extended import JWTManager
+from flask_admin import Admin
+from flask_login import LoginManager
 
 
-class Base(DeclarativeBase):
-    pass
-
-
-db = SQLAlchemy(model_class=Base)
+db = SQLAlchemy()
 ma = Marshmallow()
 jwt = JWTManager()
+admin = Admin()
+login_manager = LoginManager()

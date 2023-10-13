@@ -4,7 +4,6 @@ from marshmallow import ValidationError
 from app.utils import response
 from app.validators.tweet import tweet_validator
 from app.services.tweet import TweetCRUD
-from app.schemas.tweet import tweet_schema
 
 bp = Blueprint("tweets", __name__)
 

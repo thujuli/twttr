@@ -9,6 +9,7 @@ from flask_jwt_extended import (
     jwt_required,
     get_jwt,
 )
+from flask_login import login_user, logout_user
 from app.utils import response
 from app.validators.auth import login_validator
 from app.services.user import UserCRUD
@@ -36,6 +37,7 @@ def login():
 
     try:
         user_by_email = UserCRUD.get_by_email(data.get("email"))
+        login_user(user_by_email)
     except NoResultFound:
         return response.error("Incorrect Email or Password"), 401
 
@@ -64,5 +66,6 @@ def modify_token():
     token = get_jwt()
     jti = token["jti"]
     ttype = token["type"]
+    logout_user()
 
     return block_token(jti, ttype)

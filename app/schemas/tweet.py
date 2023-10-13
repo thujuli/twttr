@@ -1,11 +1,11 @@
 from app.core.extensions import ma
 from app.schemas.user import UserSchema
-from app.models import Tweets
+from app.models import Tweet
 
 
 class TweetSchema(ma.SQLAlchemySchema):
     class Meta:
-        model = Tweets
+        model = Tweet
 
     id = ma.auto_field()
     content = ma.auto_field()

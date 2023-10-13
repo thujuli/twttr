@@ -1,23 +1,20 @@
-from sqlalchemy import Integer, String, DateTime, ForeignKey
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy import Column, Integer, String, DateTime, ForeignKey
+from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
-import datetime
 from app.core.extensions import db
 
 
-class Tweets(db.Model):
-    id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    content: Mapped[str] = mapped_column(String, nullable=False)
-    image_name: Mapped[str] = mapped_column(String, nullable=True)
-    image_path: Mapped[str] = mapped_column(String, nullable=True)
-    user_id: Mapped[int] = mapped_column(
-        ForeignKey("users.id", ondelete="CASCADE"), nullable=False
-    )
-    created: Mapped[datetime.datetime] = mapped_column(
-        DateTime(timezone=True), server_default=func.now()
-    )
-    updated: Mapped[datetime.datetime] = mapped_column(
-        DateTime(timezone=True), server_default=func.now()
-    )
+class Tweet(db.Model):
+    __tablename__ = "tweets"
 
-    user: Mapped["Users"] = relationship(back_populates="tweets")
+    id = Column(Integer, primary_key=True)
+    content = Column(String, nullable=False)
+    image_name = Column(String)
+    image_path = Column(String)
+    user_id = Column(
+        Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False
+    )
+    created = Column(DateTime(timezone=True), server_default=func.now())
+    updated = Column(DateTime(timezone=True), server_default=func.now())
+
+    user = relationship("User", back_populates="tweets")

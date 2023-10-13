@@ -118,3 +118,50 @@ logout.addEventListener("click", function () {
   };
   xhr.send();
 });
+
+//POST NEW TWEET
+const formTweet = document.getElementById("form-tweet");
+formTweet.addEventListener("submit", function (e) {
+  e.preventDefault();
+  const xhr = new XMLHttpRequest();
+  const url = "/api/tweets";
+
+  //get data from form
+  const content = document.getElementById("tweets").value;
+
+  //validasi input
+  if (content == "") return alert("Content tidak boleh kosong");
+
+  let data = JSON.stringify({
+    content: content,
+  });
+
+  xhr.open("POST", url, true);
+  xhr.setRequestHeader("Content-Type", "application/json;charset=utf-8");
+  xhr.setRequestHeader(
+    "Authorization",
+    `Bearer ${localStorage.getItem("accessToken")}`
+  );
+  xhr.onreadystatechange = function () {
+    if (this.readyState == 4) {
+      if (this.status == 201) {
+        let res = JSON.parse(this.response);
+        formTweet.reset();
+        divEl.setAttribute("class", "alert alert-success");
+        divEl.setAttribute("role", "alert");
+        divEl.innerHTML = res.message;
+      } else {
+        let res = JSON.parse(this.response);
+        divEl.setAttribute("class", "alert alert-danger");
+        divEl.setAttribute("role", "alert");
+        divEl.innerHTML = res.message;
+      }
+    }
+  };
+  xhr.send(data);
+
+  //give feedback
+  const alertLoc = document.getElementById("tweet-alert");
+  const divEl = document.createElement("div");
+  alertLoc.appendChild(divEl);
+});
