@@ -113,7 +113,7 @@
             ></button>
           </div>
           <div class="modal-body">
-            <form id="form-modal">
+            <form method="post" enctype="multipart/form-data" id="form-upload">
               <div id="tweet-alert"></div>
               <div class="form-floating mb-3">
                 <textarea
@@ -127,6 +127,7 @@
                 <span class="input-group-text" id="basic-addon1">Upload</span>
                 <input
                   type="file"
+                  name="file"
                   class="form-control"
                   placeholder="Upload File"
                   id="file"

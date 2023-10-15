@@ -59,6 +59,7 @@ const getData = function () {
           imgAnchor.setAttribute("download", tweet.image_path);
           if (tweet.image_name !== null) {
             imgEl.setAttribute("src", tweet.image_path);
+            imgEl.setAttribute("class", "w-100");
           }
           blockquote.append(p, imgAnchor);
           cardBody.append(blockquote);
@@ -159,6 +160,51 @@ formTweet.addEventListener("submit", function (e) {
     }
   };
   xhr.send(data);
+
+  //give feedback
+  const alertLoc = document.getElementById("tweet-alert");
+  const divEl = document.createElement("div");
+  alertLoc.appendChild(divEl);
+});
+
+//POST NEW TWEET MODAL
+const modalFormTweet = document.getElementById("form-upload");
+modalFormTweet.addEventListener("submit", function (e) {
+  e.preventDefault();
+  const xhr = new XMLHttpRequest();
+  const url = "/api/tweets";
+
+  // upload file
+  const formData = new FormData();
+  const content = document.getElementById("tweets-modal").value;
+  const file = document.getElementById("file");
+  if (content.length < 1) return alert("Content tidak boleh kosong");
+  else {
+    console.log(content, file.files[0]);
+    formData.append("content", content);
+    formData.append("file", file.files[0]);
+  }
+
+  xhr.open("POST", url);
+  xhr.setRequestHeader(
+    "Authorization",
+    `Bearer ${localStorage.getItem("accessToken")}`
+  );
+  xhr.send(formData);
+  xhr.onreadystatechange = function () {
+    if (this.status == 201) {
+      let res = JSON.parse(this.response);
+      formTweet.reset();
+      divEl.setAttribute("class", "alert alert-success");
+      divEl.setAttribute("role", "alert");
+      divEl.innerHTML = res.message;
+    } else {
+      let res = JSON.parse(this.response);
+      divEl.setAttribute("class", "alert alert-danger");
+      divEl.setAttribute("role", "alert");
+      divEl.innerHTML = res.message;
+    }
+  };
 
   //give feedback
   const alertLoc = document.getElementById("tweet-alert");
