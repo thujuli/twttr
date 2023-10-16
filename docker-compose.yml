@@ -10,6 +10,7 @@ services:
     container_name: api
     depends_on:
       - psql
+      - redis
     ports:
       - 5000:5000
     restart: always
@@ -27,6 +28,41 @@ services:
     restart: always
     volumes:
       - data-psql:/var/lib/postgresql/data
+
+  redis:
+    container_name: redis
+    image: redis:7.2
+    ports:
+      - 6379:6379
+    restart: always
+
+  celery-worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    container_name: celery-worker
+    command: celery -A make_celery worker --loglevel=info
+    depends_on:
+      - redis
+    restart: always
+    volumes:
+      - .:/usr/src/app/
+
+  celery-beat:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    container_name: celery-beat
+    command: celery -A make_celery beat --loglevel=info
+    depends_on:
+      - celery-worker
+    restart: always
+    volumes:
+      - .:/usr/src/app/
 
 volumes:
   data-psql:

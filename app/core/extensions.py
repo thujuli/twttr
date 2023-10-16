@@ -8,5 +8,5 @@ from flask_login import LoginManager
 db = SQLAlchemy()
 ma = Marshmallow()
 jwt = JWTManager()
-admin = Admin()
+admin_panel = Admin()
 login_manager = LoginManager()
