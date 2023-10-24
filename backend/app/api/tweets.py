@@ -2,6 +2,7 @@ from flask import Blueprint, request
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from marshmallow import ValidationError
 from werkzeug.utils import secure_filename
+from flask_cors import CORS
 import os
 from app.utils import response
 from app.validators.tweet import tweet_validator
@@ -9,6 +10,7 @@ from app.services.tweet import TweetCRUD
 from app.utils.file import upload_to_minio, allowed_file, get_path
 
 bp = Blueprint("tweets", __name__)
+CORS(bp)
 
 
 @bp.route("/", methods=["POST"])

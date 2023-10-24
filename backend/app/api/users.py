@@ -3,11 +3,13 @@ from werkzeug.security import generate_password_hash
 from marshmallow import ValidationError
 from sqlalchemy.exc import NoResultFound
 from flask_jwt_extended import jwt_required, get_jwt_identity
+from flask_cors import CORS
 from app.utils import response
 from app.validators.user import user_validator
 from app.services.user import UserCRUD
 
 bp = Blueprint("users", __name__)
+CORS(bp)
 
 
 @bp.route("/", methods=["POST"])

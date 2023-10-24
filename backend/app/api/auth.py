@@ -10,6 +10,7 @@ from flask_jwt_extended import (
     get_jwt,
 )
 from flask_login import login_user, logout_user
+from flask_cors import CORS
 from app.utils import response
 from app.validators.auth import login_validator
 from app.services.user import UserCRUD
@@ -20,6 +21,7 @@ from app.core.security import check_if_token_revoked
 
 
 bp = Blueprint("auth", __name__)
+CORS(bp)
 
 
 @bp.route("/login", methods=["POST"])
