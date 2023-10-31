@@ -12,8 +12,16 @@ class TweetCRUD:
         return tweet_schema.dump(tweet)
 
     @staticmethod
-    def get_all():
-        tweets = db.session.execute(
-            db.select(Tweet).order_by(Tweet.created.desc())
-        ).scalars()
-        return [tweet_schema.dump(tweet) for tweet in tweets]
+    def get_all(page: int, per_page: int):
+        tweets = db.paginate(
+            db.select(Tweet).order_by(Tweet.created.desc()),
+            page=page,
+            per_page=per_page,
+        )
+
+        return (
+            [tweet_schema.dump(tweet) for tweet in tweets],
+            tweets.page,
+            tweets.pages,
+            tweets.total,
+        )

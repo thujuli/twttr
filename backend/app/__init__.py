@@ -5,6 +5,7 @@ from app.api.health import bp as bp_health
 from app.api.users import bp as bp_users
 from app.api.auth import bp as bp_auth
 from app.api.tweets import bp as bp_tweets
+from app.api.leaderboard import bp as bp_leaderboard
 from app.views.routes import bp as bp_views
 from app.models import User, Tweet, TokenBlocklist, TweetCount
 from app.admin.user import UserView
@@ -45,6 +46,7 @@ def create_app(config_class=Config):
     app.register_blueprint(bp_users, url_prefix="/api/users")
     app.register_blueprint(bp_auth, url_prefix="/api/auth")
     app.register_blueprint(bp_tweets, url_prefix="/api/tweets")
+    app.register_blueprint(bp_leaderboard, url_prefix="/api/leaderboard")
     app.register_blueprint(bp_views, url_prefix="")
 
     # Add admin model view

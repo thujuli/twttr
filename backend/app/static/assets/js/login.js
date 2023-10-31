@@ -1,5 +1,5 @@
 const formLogin = document.getElementById("form-login");
-formLogin.addEventListener("submit", function (e) {
+formLogin.addEventListener("submit", function(e) {
   e.preventDefault();
 
   const xhr = new XMLHttpRequest();
@@ -21,7 +21,7 @@ formLogin.addEventListener("submit", function (e) {
   xhr.open("POST", url);
   xhr.setRequestHeader("Content-Type", "application/json;charset=utf-8");
 
-  xhr.onreadystatechange = function () {
+  xhr.onreadystatechange = function() {
     if (this.readyState == 4) {
       if (this.status == 200) {
         formLogin.reset();
@@ -30,7 +30,7 @@ formLogin.addEventListener("submit", function (e) {
         //save to token to localStorage
         localStorage.setItem("accessToken", res.data.access_token);
         localStorage.setItem("refreshToken", res.data.refresh_token);
-        window.location.href = "/";
+        window.location.href = "/admin";
       } else {
         let res = JSON.parse(this.response);
         div.setAttribute("class", "alert alert-danger");

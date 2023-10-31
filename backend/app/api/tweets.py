@@ -59,10 +59,27 @@ def create_tweet():
         }
         result = TweetCRUD.create(data)
         return response.ok("Tweet has been successfully created", result), 201
+    else:
+        return response.error("Something went wrong"), 500
 
 
 @bp.route("/", methods=["GET"])
 @jwt_required()
 def get_tweets():
-    tweets = TweetCRUD.get_all()
-    return response.ok("All tweets have been successfully retrieved", tweets)
+    page = request.args.get("page", 1)
+    per_page = request.args.get("per_page", 3)
+
+    try:
+        page = int(page)
+        per_page = int(per_page)
+    except ValueError:
+        return response.error("Invalid parameter"), 400
+
+    tweets, current_page, total_pages, total_items = TweetCRUD.get_all(page, per_page)
+    return response.pagination(
+        "All tweets have been successfully retrieved",
+        tweets,
+        current_page,
+        total_pages,
+        total_items,
+    )
