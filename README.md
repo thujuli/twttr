@@ -2,7 +2,7 @@
 
 ![Application Architecture](docs/images/application-architecture.jpg?raw=true "Application Architecture")
 
-#### Video Demo: [TWTTR]()
+#### Video Demo: [TWTTR](https://www.youtube.com/watch?v=VaSoQ5QTHrs)
 
 ## Backgound
 
@@ -246,7 +246,7 @@ cd backend/
 cp .env.example .env
 
 # execute docker-compose-prod.yml
-docker compose -f docker-compose-prod up -d
+docker compose -f docker-compose-prod.yml up -d
 ```
 
 #### Running the Frontend Service
@@ -259,5 +259,5 @@ cd frontend/
 cp .env.example .env
 
 # execute docker-compose-prod.yml
-docker compose -f docker-compose-prod up -d
+docker compose -f docker-compose-prod.yml up -d
 ```
