@@ -3,10 +3,12 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from marshmallow import ValidationError
 from werkzeug.utils import secure_filename
 from flask_cors import CORS
+from sqlalchemy.exc import NoResultFound
 import os
 from app.utils import response
 from app.validators.tweet import tweet_validator
 from app.services.tweet import TweetCRUD
+from app.services.like import like, unlike, get_liked
 from app.utils.file import upload_to_minio, allowed_file, get_path
 
 bp = Blueprint("tweets", __name__)
@@ -75,11 +77,26 @@ def get_tweets():
     except ValueError:
         return response.error("Invalid parameter"), 400
 
-    tweets, current_page, total_pages, total_items = TweetCRUD.get_all(page, per_page)
+    tweets, total_pages = TweetCRUD.get_all(page, per_page)
     return response.pagination(
-        "All tweets have been successfully retrieved",
-        tweets,
-        current_page,
-        total_pages,
-        total_items,
+        "All tweets have been successfully retrieved", tweets, total_pages
     )
+
+
+@bp.route("/<int:tweet_id>/likes", methods=["POST"])
+@jwt_required()
+def liked_tweet(tweet_id):
+    current_user_id = get_jwt_identity()
+
+    try:
+        TweetCRUD.get_by_id(tweet_id)
+    except NoResultFound:
+        return response.error("Tweet not found"), 400
+
+    try:
+        liked = get_liked(current_user_id, tweet_id)
+        unlike(liked)
+        return response.ok("Successfully unliked the tweet", {}), 200
+    except NoResultFound:
+        like(current_user_id, tweet_id)
+        return response.ok("Successfully liked the tweet", {}), 200

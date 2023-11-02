@@ -7,7 +7,7 @@ from app.api.auth import bp as bp_auth
 from app.api.tweets import bp as bp_tweets
 from app.api.leaderboard import bp as bp_leaderboard
 from app.views.routes import bp as bp_views
-from app.models import User, Tweet, TokenBlocklist, TweetCount
+from app.models import User, Tweet, TokenBlocklist, TweetCount, Like
 from app.admin.user import UserView
 from app.admin.tweet import TweetView
 from app.utils.login import load_user

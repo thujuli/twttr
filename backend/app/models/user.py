@@ -17,6 +17,7 @@ class User(db.Model, UserMixin):
     updated = Column(DateTime(timezone=True), server_default=func.now())
 
     tweets = relationship("Tweet", back_populates="user")
+    likes = relationship("Like", back_populates="user")
 
     def __str__(self):
         return self.username

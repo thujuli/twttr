@@ -18,3 +18,4 @@ class Tweet(db.Model):
     updated = Column(DateTime(timezone=True), server_default=func.now())
 
     user = relationship("User", back_populates="tweets")
+    likes = relationship("Like", back_populates="tweet")

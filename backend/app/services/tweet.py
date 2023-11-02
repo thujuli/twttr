@@ -19,9 +19,8 @@ class TweetCRUD:
             per_page=per_page,
         )
 
-        return (
-            [tweet_schema.dump(tweet) for tweet in tweets],
-            tweets.page,
-            tweets.pages,
-            tweets.total,
-        )
+        return ([tweet_schema.dump(tweet) for tweet in tweets], tweets.pages)
+
+    @staticmethod
+    def get_by_id(id: int):
+        return db.session.execute(db.select(Tweet).filter_by(id=id)).scalar_one()

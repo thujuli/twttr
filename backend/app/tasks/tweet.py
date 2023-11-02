@@ -33,8 +33,5 @@ def tweet_count():
 
 @shared_task(ignore_result=False)
 def delete_all_tweets():
-    try:
-        db.session.query(Tweet).delete()
-        db.session.commit()
-    except:
-        db.session.rollback()
+    db.session.query(Tweet).delete()
+    db.session.commit()

@@ -2,9 +2,7 @@ version: "3.8"
 
 services:
   twttr-api:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: thujuli/twttr-backend:latest
     env_file:
       - .env
     container_name: twttr-api
@@ -14,8 +12,6 @@ services:
     ports:
       - 5000:8000
     restart: always
-    volumes:
-      - .:/usr/src/app/
     command: gunicorn -w 4 --bind 0.0.0.0:8000 "app:create_app()"
 
   psql:
@@ -37,9 +33,7 @@ services:
     restart: always
 
   celery-worker:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: thujuli/twttr-backend:latest
     env_file:
       - .env
     container_name: celery-worker
@@ -47,13 +41,9 @@ services:
     depends_on:
       - redis
     restart: always
-    volumes:
-      - .:/usr/src/app/
 
   celery-beat:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: thujuli/twttr-backend:latest
     env_file:
       - .env
     container_name: celery-beat
@@ -61,8 +51,6 @@ services:
     depends_on:
       - celery-worker
     restart: always
-    volumes:
-      - .:/usr/src/app/
 
 volumes:
   data-psql:

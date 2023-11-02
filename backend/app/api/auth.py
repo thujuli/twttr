@@ -49,7 +49,11 @@ def login():
 
     access_token = create_access_token(identity=user_by_email.id)
     refresh_token = create_refresh_token(identity=user_by_email.id)
-    res = {"access_token": access_token, "refresh_token": refresh_token}
+    res = {
+        "access_token": access_token,
+        "refresh_token": refresh_token,
+        "user_id": user_by_email.id,
+    }
 
     return response.ok("Successfully Login", res)
 
@@ -59,7 +63,10 @@ def login():
 def refresh():
     current_user_id = get_jwt_identity()
     access_token = create_access_token(identity=current_user_id)
-    return response.ok("Successfully refreshing token", {"access_token": access_token})
+    return response.ok(
+        "Successfully refreshing token",
+        {"access_token": access_token, "user_id": current_user_id},
+    )
 
 
 @bp.route("/logout", methods=["DELETE"])
