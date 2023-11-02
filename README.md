@@ -242,6 +242,9 @@ git clone https://github.com/thujuli/twttr.git
 # change directory to backend
 cd backend/
 
+# add environment variable
+cp .env.example .env
+
 # execute docker-compose-prod.yml
 docker compose -f docker-compose-prod up -d
 ```
@@ -251,6 +254,9 @@ docker compose -f docker-compose-prod up -d
 ```
 # change directory to frontend
 cd frontend/
+
+# add environment variable
+cp .env.example .env
 
 # execute docker-compose-prod.yml
 docker compose -f docker-compose-prod up -d
