@@ -206,7 +206,7 @@ This project also serves as a learning tool, helping to enhance web development 
 
 #### Displaying Tweets with Pagination
 
-![Home](docs/images/tweet.png?raw=true "Home")
+![Home](docs/images/home.png?raw=true "Home")
 
 #### Leaderboard of User Post Counts
 
