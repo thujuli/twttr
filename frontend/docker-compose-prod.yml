@@ -1,0 +1,9 @@
+version: "3.8"
+
+services:
+  twttr-frontend:
+    image: thujuli/twttr-frontend:latest
+    container_name: twttr-frontend
+    ports:
+      - 8080:4173
+    restart: always

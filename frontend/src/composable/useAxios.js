@@ -41,9 +41,23 @@ export function useAxios() {
     }
   };
 
+  const tryLike = async (url) => {
+    try {
+      const response = await axiosInstance.post(url, null, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      return response;
+    } catch (err) {
+      return err.response;
+    }
+  };
+
   return {
     tryFetch,
     tryPost,
     tryUpload,
+    tryLike,
   };
 }

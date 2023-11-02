@@ -10,14 +10,22 @@
                 </div>
             </Form>
             <div class="flex flex-col space-y-3 mt-4">
-                <Card v-for="data in dataUser" :key="data.id" :username="data.user.username" :content="data.content" :image-path="data.image_path"/>
+                <!-- <Card v-for="data in dataUser" :key="data.id" :username="data.user.username" :content="data.content" :image-path="data.image_path"/> -->
+                <Card v-for="data in dataUser" :key="data.id">
+                    <img class="w-full" :src="data.image_path" :alt="data.image_name">
+                    <div class="px-6 py-2">
+                        <h3 class="text-gray-300 text-lg">{{ data.content }}</h3>
+                        <h2 class="font-semibold text-gray-200 text-lg text-left md:text-right"> <span class="border-b-2">{{ data.user.username }}</span></h2>
+                    </div>
+                    <div class="flex flex-row px-4 gap-3 pt-2 border-t-2 border-sky-800 bg-gray-300">
+                        <BtnLike button-type="submit" @handle-click="likeTweet(data.id)" :likes="data.likes.length"/>
+                    </div>
+                </Card>
                 <!-- pagination -->
                 <div class="pagination flex justify-center gap-5 items-center">
-                    <button @click="prevItem" :disabled="page === 1"
-                        class="bg-sky-500 p-2 mt-2 rounded-xl font-bold text-gray-200 hover:bg-sky-800 disabled:bg-gray-500">Previous</button>
-                    <span class="text-xl text-gray-200">{{ page }} of {{ pagination.totalPages }}</span>
-                    <button @click="nextItem" :disabled="page === pagination.totalPages"
-                        class="bg-sky-500 p-2 mt-2 rounded-xl font-bold text-gray-200 hover:bg-sky-800 disabled:bg-gray-500">Next</button>
+                    <BtnPagination @handle-click="prevItem" button-name="Previous" button-type="button" :disabled="page ===1"/>
+                    <span class="text-xl text-gray-200">{{ page }} of {{ totalPages }}</span>
+                    <BtnPagination @handle-click="nextItem" button-name="Next" button-type="button" :disabled="page === totalPages"/>
                 </div>
             </div>
         </div>
@@ -45,11 +53,13 @@ import Card from "../components/Card.vue";
 import Modal from "../components/Modal.vue";
 import Textarea from "../components/Textarea.vue";
 import InputFile from "../components/InputFile.vue";
+import BtnLike from "../components/BtnLike.vue";
+import BtnPagination from "../components/BtnPagination.vue";
 import { ref, onMounted, reactive, watch} from "vue";
-import { useAxios} from "../composable/useAxios"
+import { useAxios } from "../composable/useAxios"
 import Swal from "sweetalert2"
 
-const { tryFetch, tryPost, tryUpload } = useAxios()
+const { tryFetch, tryPost, tryUpload, tryLike } = useAxios()
 const showModal = ref(false)
 
 const dataUser = ref([])
@@ -62,19 +72,20 @@ const formData = reactive({
 
 const page = ref(1)
 const per_page = ref(3)
-const pagination = reactive({
-    totalItems: 0,
-    totalPages: 0,
-})
+const totalPages = ref(1)
+
+
+const likeTweet = async (tweet_id) => {
+    await tryLike(`${apiTweet}${tweet_id}/likes`)
+    handleFetching(page.value, per_page.value)
+}
 
 const prevItem = () => {
     page.value --
-    console.log(page.value)
 }
 
 const nextItem = () => {
     page.value ++ 
-    console.log(page.value)
 }
 
 watch(page, (newPage) => {
@@ -88,8 +99,10 @@ const toggleModal = () => {
 const handleFetching = async (page, per_page) => {
     const response = await tryFetch(apiTweet, page, per_page)
     dataUser.value = response.data.data
-    pagination.totalItems = response.data.total_items
-    pagination.totalPages = response.data.total_pages
+    if (response.data.total_pages !== 0) {
+        totalPages.value = response.data.total_pages
+    }
+    console.log(dataUser.value)
 }
 
 const handleSubmit = async () => {
@@ -140,13 +153,13 @@ const handleUpload = async () => {
             title: 'Good job!',
             text: 'Tweet has been successfully created'
         })
+        handleFetching(page.value, per_page.value)
         toggleModal()
-        handleFetching()
     }
 }
 
 onMounted(async ()=> {
-    handleFetching()
+    handleFetching(page.value, per_page.value)
 })
 
 </script>

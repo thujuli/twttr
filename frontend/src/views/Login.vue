@@ -30,8 +30,6 @@ import { useAuthStore } from "../stores/authStore";
 const { setToken } = useAuthStore()
 const { tryAuth } = useAuth()
 const router = useRouter()
-// const accessToken = ref("")
-// const refreshToken = ref("")
 const showMessage = ref(false)
 const message = ref("")
 const status = reactive({
@@ -48,7 +46,7 @@ const handleLogin = async () => {
     const response = await tryAuth(import.meta.env.VITE_API_BASEURL + "/api/auth/login", userData)
 
     if (response.data.success) {
-        setToken(response.data.data.access_token, response.data.data.refresh_token)
+        setToken(response.data.data.access_token, response.data.data.refresh_token, response.data.data.user_id)
         router.push("/")
     } else if (response.status == 422) {
             message.value = "Invalid input data"

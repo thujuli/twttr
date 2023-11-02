@@ -3,8 +3,6 @@
 </template>
 
 <script setup>
-// defineProps(["id", "modelValue"])
-// defineEmits(['update:modelValue'])
 const { id, modelValue } = defineProps(['id', 'modelValue']);
 const emits = defineEmits(['update:modelValue']); // Use defineEmits to declare the emit function
 
